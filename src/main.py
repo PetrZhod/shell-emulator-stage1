@@ -1,13 +1,10 @@
-"""Графический эмулятор командной оболочки для этапа 1."""
-
 import tkinter as tk
 
-# Создаём окно.
 root = tk.Tk()
 root.title("Shell Emulator — MyVFS")
 root.geometry("800x500")
 
-# Создаём область для вывода.
+#оздаём область для вывода
 output = tk.Text(
     root,
     bg="#000000",
