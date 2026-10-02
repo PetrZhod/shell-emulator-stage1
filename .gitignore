@@ -1,0 +1,36 @@
+# Служебные файлы Python (нарушение Г3)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Виртуальные окружения
+.venv/
+venv/
+env/
+
+# Артефакты сборки (нарушение Г4)
+build/
+dist/
+*.egg
+
+# Файлы настроек редакторов (нарушение Г5)
+.vs/
+.vscode/
+.idea/
+*.pyproj
+*.swp
+
+# Архивы (нарушение Г1)
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# ОС-специфичные файлы
+.DS_Store
+Thumbs.db
