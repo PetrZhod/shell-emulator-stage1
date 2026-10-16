@@ -1,0 +1,4 @@
+# A successful exit stops the script and closes the window.
+ls before-exit
+exit
+ls must-not-run
