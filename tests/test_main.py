@@ -147,15 +147,15 @@ class ShellTests(unittest.TestCase):
         self.assertEqual(self.command("   "), (0, "", "", False))
         self.assertEqual(self.rows(), [])
 
-    def test_csv_records_username_error_and_source(self):
+    def test_csv_contains_only_required_fields(self):
         with patch.object(shell.getpass, "getuser", return_value="student"):
-            shell.execute_command("cd one two", self.log, "demo.txt", 8)
+            shell.execute_command("cd one two", self.log)
         row = self.rows()[0]
         self.assertEqual(row["username"], "student")
         self.assertEqual(row["error"], "cd: too many arguments")
-        self.assertEqual(row["status"], "1")
-        self.assertEqual((row["source"], row["line_number"]), ("demo.txt", "8"))
-        self.assertTrue(row["timestamp"])
+        self.assertEqual(row["command"], "cd")
+        self.assertEqual(json.loads(row["arguments"]), ["one", "two"])
+        self.assertEqual(set(row), {"command", "arguments", "username", "error"})
 
     def test_csv_unicode_commas_and_quotes(self):
         self.command('ls папка,файл "test"')
@@ -167,7 +167,8 @@ class ShellTests(unittest.TestCase):
         shell.prepare_log(self.log)
         self.command("cd home")
         self.assertEqual(len(self.rows()), 2)
-        self.assertEqual(self.log.read_text().count("timestamp,username"), 1)
+        self.assertTrue(all(row["error"] == "" for row in self.rows()))
+        self.assertEqual(self.log.read_text(encoding="utf-8").count("command,arguments,username,error"), 1)
 
     def test_existing_non_csv_not_overwritten(self):
         self.log.write_text("important data", encoding="utf-8")

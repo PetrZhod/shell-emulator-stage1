@@ -5,15 +5,11 @@ import csv
 import getpass
 import json
 import sys
-from datetime import datetime
 from pathlib import Path
 
 
 PROMPT = "localhost:~# "
-LOG_FIELDS = [
-    "timestamp", "username", "command", "arguments", "status", "error",
-    "source", "line_number",
-]
+LOG_FIELDS = ["command", "arguments", "username", "error"]
 
 
 def parse_arguments(argv=None):
@@ -57,23 +53,19 @@ def prepare_log(path):
             csv.writer(stream).writerow(LOG_FIELDS)
 
 
-def log_command(path, command, arguments, status, error, source, line_number):
+def log_command(path, command, arguments, error):
     """Добавить событие, не удаляя предыдущие записи."""
     with Path(path).open("a", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=LOG_FIELDS)
         writer.writerow({
-            "timestamp": datetime.now().astimezone().isoformat(timespec="seconds"),
             "username": getpass.getuser(),
             "command": command,
             "arguments": json.dumps(arguments, ensure_ascii=False),
-            "status": status,
             "error": error,
-            "source": source,
-            "line_number": line_number if line_number is not None else "",
         })
 
 
-def execute_command(command_line, log_path, source="interactive", line_number=None):
+def execute_command(command_line, log_path):
     """Разобрать команду, выполнить заглушку и вернуть статус, текст, ошибку, exit."""
     parts = command_line.split()
     if not parts:
@@ -98,7 +90,7 @@ def execute_command(command_line, log_path, source="interactive", line_number=No
         status, error = 127, f"sh: {command}: not found"
 
     try:
-        log_command(log_path, command, arguments, status, error, source, line_number)
+        log_command(log_path, command, arguments, error)
     except (OSError, UnicodeError, ValueError) as exc:
         # Ошибка журнала должна быть видна, а не приводить к падению GUI.
         error = (error + "\n" if error else "") + f"log: {exc}"
@@ -158,7 +150,7 @@ def main(argv=None):
         output.config(state=tk.NORMAL)
         output.insert(tk.END, f"{PROMPT}{command_line}\n")
         last_status, text, error, should_exit = execute_command(
-            command_line, args.log, source, line_number
+            command_line, args.log
         )
         output.insert(tk.END, text)
         if error:
