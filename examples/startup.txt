@@ -1,0 +1,10 @@
+# Stage 2: successful commands and errors. Window remains open.
+
+ls
+ls one two
+cd
+cd home # Inline comment
+cd one two
+unknown
+exit now
+ls after-errors
