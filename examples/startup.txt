@@ -1,0 +1,68 @@
+# Этап 5: все команды, режимы, ошибки и остановка по exit.
+ls
+ls one two
+cd
+cd home
+cd one two
+unknown
+exit now
+ls -a
+ls -l /hello.txt
+ls -al /
+ls -x
+ls /missing
+ls / /home
+cd /home/user/docs
+cd ..
+cd -
+cd /hello.txt
+cd /missing
+cd
+du
+du -s /
+du /hello.txt
+du /missing
+du -x
+du / /home
+cal
+cal 2024
+cal 2 2024
+cal 13 2024
+cal x
+cal 0
+cal 1 2 3
+history
+history 3
+history 0
+history -1
+history x
+history 1 2
+history -c
+history
+mkdir /new
+mkdir /new
+mkdir
+mkdir -p /new/a/b
+mkdir -p /new/a/b
+mkdir /missing/child
+mkdir -x /bad
+mkdir a b
+mkdir -p /hello.txt/a
+cp /hello.txt /new/copy.txt
+cp /binary.bin /new/copy.txt
+cp /hello.txt /new
+cp -r /home /backup
+cp /home /copy
+cp -r /home /home/child
+cp /hello.txt /hello.txt
+cp /missing /x
+cp
+cp a b c
+cp -x /hello.txt /x
+ls -al /new
+du -s /backup
+vfs-init extra
+vfs-init
+ls
+exit
+ls must-not-run
