@@ -1,0 +1,13 @@
+# Этап 3: заглушки, ошибки, очистка VFS и остановка сценария.
+ls
+ls one two
+cd
+cd home
+cd one two
+unknown
+exit now
+vfs-init extra
+vfs-init
+ls
+exit
+ls must-not-run
