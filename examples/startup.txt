@@ -1,0 +1,46 @@
+# Этап 4: основные команды, режимы, ошибки и остановка после exit.
+ls
+ls one two
+cd
+cd home
+cd one two
+unknown
+exit now
+ls -a
+ls -l /hello.txt
+ls -al /
+ls -x
+ls /missing
+ls / /home
+cd /home/user/docs
+cd ..
+cd -
+cd /hello.txt
+cd /missing
+cd
+du
+du -s /
+du /hello.txt
+du /missing
+du -x
+du / /home
+cal
+cal 2024
+cal 2 2024
+cal 13 2024
+cal x
+cal 0
+cal 1 2 3
+history
+history 3
+history 0
+history -1
+history x
+history 1 2
+history -c
+history
+vfs-init extra
+vfs-init
+ls
+exit
+ls must-not-run

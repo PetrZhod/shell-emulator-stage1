@@ -1,0 +1,15 @@
+{
+  "name": "MyVFS",
+  "root": {"type": "directory", "children": {
+    "hello.txt": {"type": "file", "data": "SGVsbG8K"},
+    ".hidden": {"type": "file", "data": "aGlkZQ=="},
+    "binary.bin": {"type": "file", "data": "AP8BgA=="},
+    "home": {"type": "directory", "children": {
+      "user": {"type": "directory", "children": {
+        "docs": {"type": "directory", "children": {
+          "readme.txt": {"type": "file", "data": "bm90ZXMK"}
+        }}
+      }}
+    }}
+  }}
+}
