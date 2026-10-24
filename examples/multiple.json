@@ -1,0 +1,7 @@
+{
+  "name": "MyVFS",
+  "root": {"type": "directory", "children": {
+    "one.txt": {"type": "file", "data": "b25l"},
+    "two.bin": {"type": "file", "data": "AP8="}
+  }}
+}
