@@ -19,7 +19,7 @@ from vfs import VirtualFileSystem
 class ShellTests(unittest.TestCase):
     """Проверять команды на независимой временной VFS."""
 
-    def setUp(self):
+    def prepare_environment(self):
         """Создать копию образца и отдельный CSV-журнал."""
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
@@ -35,6 +35,7 @@ class ShellTests(unittest.TestCase):
 
     def test_commands(self):
         """Проверить все доступные команды, режимы и неверные аргументы."""
+        self.prepare_environment()
         cases = [("ls", 0), ("cd", 0), ("cd one two", 1),
                  ("unknown", 127), ("exit now", 1), ("exit", 0)]
         if "du" in self.shell.handlers:
@@ -62,6 +63,7 @@ class ShellTests(unittest.TestCase):
 
     def test_content_and_independence(self):
         """Проверить размеры декодированных данных и независимость копий."""
+        self.prepare_environment()
         if "du" in self.shell.handlers:
             self.assertEqual(self.shell.execute("du -s /")[1], "20\t/\n")
             self.assertNotIn(".hidden", self.shell.execute("ls")[1])
@@ -75,6 +77,7 @@ class ShellTests(unittest.TestCase):
 
     def test_csv(self):
         """Записать аргументы, пользователя и ошибку ровно в четыре поля."""
+        self.prepare_environment()
         with patch.object(app.getpass, "getuser", return_value="student"):
             self.shell.execute("unknown argument")
         with self.log.open(encoding="utf-8", newline="") as stream:
@@ -88,6 +91,7 @@ class ShellTests(unittest.TestCase):
 
     def test_reset(self):
         """Очистить память и физический JSON; ошибочный reset их не меняет."""
+        self.prepare_environment()
         self.assertEqual(self.shell.execute("vfs-init extra")[0], 1)
         self.assertEqual(self.path.read_bytes(), self.original)
         with patch.object(Path, "write_text", side_effect=OSError("denied")):
@@ -98,6 +102,7 @@ class ShellTests(unittest.TestCase):
 
     def test_invalid_vfs(self):
         """Отклонить повреждённый JSON, неверные узлы и неверный base64."""
+        self.prepare_environment()
         cases = ("{", "{}", '{"name":"x","root":null}',
                  '{"name":"x","root":{"type":"file","data":"%%%"}}')
         for value in cases:
@@ -107,6 +112,7 @@ class ShellTests(unittest.TestCase):
 
     def test_script_and_cli(self):
         """Проверить параметры, BOM, комментарии и номера строк скрипта."""
+        self.prepare_environment()
         script = self.folder / "my script.txt"
         script.write_text("# test\n\nls # inline\n", encoding="utf-8-sig")
         self.assertEqual(app.read_startup_script(script), [(3, "ls")])
@@ -120,6 +126,7 @@ class ShellTests(unittest.TestCase):
 
     def test_demo_and_fixtures(self):
         """Выполнить демонстрацию и загрузить все три варианта VFS."""
+        self.prepare_environment()
         examples = Path(__file__).parents[1] / "examples"
         for name in ("minimal", "multiple", "deep"):
             VirtualFileSystem(examples / f"{name}.json")
